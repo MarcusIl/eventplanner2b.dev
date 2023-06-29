@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
+
+
 class EventController extends Controller
 {
     public function index()
@@ -106,11 +108,12 @@ class EventController extends Controller
         // Return a response or redirect to the event details page
     }
 
-    public function delete(Event $event)
+    public function destroy(Event $event)
     {
         // Delete the event
         $event->delete();
 
-        // Return a response or redirect to a different page
+        // Redirect to a different page or show a success message
+        return redirect()->route('events.index')->with('success', 'Event deleted successfully');
     }
 }
