@@ -22,7 +22,6 @@ class EventController extends Controller
 
     public function create(Request $request)
     {
-        return view('events_create');
         // Validate the request data
         $request->validate([
             'name' => 'required',
@@ -44,6 +43,7 @@ class EventController extends Controller
     }
     
     
+    
 
     // EventController.php
 
@@ -51,10 +51,14 @@ class EventController extends Controller
     {
         // Fetch the event details from the database
         $event = Event::findOrFail($event->id);
-
-        // Pass the event data to the events_show view
-        return view('events_show', compact('event'));
+    
+        // Fetch the tasks associated with the event
+        $tasks = $event->tasks;
+    
+        // Pass the event and tasks data to the events_show view
+        return view('events_show', compact('event', 'tasks'));
     }
+    
 
     public function invite(Event $event)
     {

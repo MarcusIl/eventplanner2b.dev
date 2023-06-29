@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +22,10 @@ Route::post('/events/{event}/invite', [EventController::class, 'invite'])->name(
 Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
 Route::post('/events/{event}/send-invitation', [EventController::class, 'sendInvitation'])->name('events.sendInvitation');
 
+// Tasks
+
+Route::get('/tasks/create/{event}', [TaskController::class, 'showCreateForm'])->name('tasks.create');
+Route::post('/tasks/create/{event}', [TaskController::class, 'create']);
 
 
 Auth::routes();
