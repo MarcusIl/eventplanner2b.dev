@@ -4,18 +4,38 @@
     <h1>My Invitations</h1>
 
     @if ($invitations->isEmpty())
-        <p>You have no invitations at the moment.</p>
+        <p>No invitations found.</p>
     @else
-        <ul>
-            @foreach ($invitations as $invitation)
-                <li>
-                    <p><strong>Event Name:</strong> {{ $invitation->event->name }}</p>
-                    <p><strong>Event Date:</strong> {{ $invitation->event->date }}</p>
-                    <p><strong>Event Location:</strong> {{ $invitation->event->location }}</p>
-                    <p><strong>Event Description:</strong> {{ $invitation->event->description }}</p>
-                    <p><strong>Invited By:</strong> {{ $invitation->event->organizer->name }}</p>
-                </li>
-            @endforeach
-        </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($invitations as $invitation)
+                    <tr>
+                        <td>{{ $invitation->event->name }}</td>
+                        <td>{{ $invitation->status }}</td>
+                        <td>
+                            @if ($invitation->status === 'pending')
+                                <form action="{{ route('invitations.respond', $invitation->id) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="response" value="accepted">
+                                    <button type="submit">Accept</button>
+                                </form>
+                                <form action="{{ route('invitations.respond', $invitation->id) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="response" value="rejected">
+                                    <button type="submit">Reject</button>
+                                </form>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     @endif
 @endsection
