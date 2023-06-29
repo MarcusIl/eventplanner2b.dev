@@ -7,8 +7,6 @@ use App\Mail\EventInvitation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Mail;
-
 
 
 
@@ -41,7 +39,7 @@ class EventController extends Controller
         ]);
     
         // Redirect to the event details page or show a success message
-        return Redirect::route('events.show', $event->id)->with('success', 'Event created successfully');
+        return redirect()->route('events.show', $event->id)->with('success', 'Event created successfully');
     }
     
     
@@ -109,7 +107,7 @@ class EventController extends Controller
         ]);
 
         // Redirect to the event details page or show a success message
-        return Redirect::route('events.show', $event->id)->with('success', 'Event created successfully');
+        return redirect()->route('events.show', $event->id)->with('success', 'Event created successfully');
     }
 
 
@@ -142,5 +140,15 @@ class EventController extends Controller
 
         // Redirect to a different page or show a success message
         return redirect()->route('events.index')->with('success', 'Event deleted successfully');
+    }
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (!Auth::check()) {
+                Session::put('previous_url', $request->url());
+            }
+            return $next($request);
+        });
     }
 }
