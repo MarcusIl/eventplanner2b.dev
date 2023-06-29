@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,15 +14,15 @@
         <p class='error'>There are no records in the database!</p>
     @else
         <ul>
-
             @foreach ($events as $event)
                 <li>
                     {{ $event->name }}
                 </li>
             @endforeach
-
         </ul>
     @endif
+
+    <a href="{{ route('events.create') }}" class="btn btn-primary">Create Event</a>
 </body>
 
 </html>
