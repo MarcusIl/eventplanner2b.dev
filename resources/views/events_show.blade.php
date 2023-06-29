@@ -11,6 +11,17 @@
         <p><strong>Organizer:</strong> {{ $event->organizer->name }}</p>
     @endif
 
+    <!-- Button to invite guests -->
+    @if (auth()->check() && $event->organizer_id == auth()->user()->id)
+        <form action="{{ route('events.invite', $event->id) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-primary">Invite Guests</button>
+        </form>
+    @endif
+
+    <!-- Button to create tasks -->
+    @if (auth()->check() && $event->organizer_id == auth()->user()->id)
+    <a href="{{ route('tasks.create', $event->id) }}" class="btn btn-primary">Create Task</a>
     @if (auth()->check() && $event->organizer_id == auth()->user()->id)
         
         <form action="{{ route('events.invite', $event->id) }}" method="POST">

@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    public function showCreateForm(Event $event)
+    {
+        return view('tasks_create', compact('event'));
+    }
+    
+
     public function create(Request $request, Event $event)
     {
         // Validate the request data
@@ -19,12 +25,15 @@ class TaskController extends Controller
         // Create a new task for the event
         $task = Task::create([
             'event_id' => $event->id,
-            'task_name' => $request->input('task_name'),
-            'task_description' => $request->input('task_description'),
+            'name' => $request->input('task_name'),
+            'description' => $request->input('task_description'),
+            'status' => 'pending',
         ]);
 
-        // Return a response or redirect to the event details page
+        // Redirect to the event details page or show a success message
+        return redirect()->route('events.show', $event->id)->with('success', 'Task created successfully');
     }
+    
 
     public function update(Request $request, Event $event, Task $task)
     {
