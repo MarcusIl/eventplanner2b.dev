@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Invitation;
 use App\Mail\EventInvitation;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Mail;
-
-
 
 class EventController extends Controller
 {
@@ -23,7 +22,6 @@ class EventController extends Controller
 
     public function create(Request $request)
     {
-        return view('events_create');
         // Validate the request data
         $request->validate([
             'name' => 'required',
@@ -31,7 +29,7 @@ class EventController extends Controller
             'location' => 'required',
             'description' => 'required',
         ]);
-    
+
         // Create a new event
         $event = Event::create([
             'name' => $request->input('name'),
@@ -39,14 +37,10 @@ class EventController extends Controller
             'location' => $request->input('location'),
             'description' => $request->input('description'),
         ]);
-    
+
         // Redirect to the event details page or show a success message
         return redirect()->route('events.show', $event->id)->with('success', 'Event created successfully');
     }
-    
-    
-
-    // EventController.php
 
     public function show(Event $event)
     {
@@ -61,11 +55,10 @@ class EventController extends Controller
     {
         // Retrieve the event details
         $event = Event::findOrFail($event->id);
-    
+
         // Render the invitation view with the event details
         return view('invite', compact('event'));
     }
-    
 
     public function sendInvitation(Request $request, Event $event)
     {
@@ -77,45 +70,45 @@ class EventController extends Controller
         // Retrieve the event details
         $event = Event::findOrFail($event->id);
 
-        // Update the event status to 'accepted' for the invited email
-        $event->status = 'accepted';
-        $event->save();
+        // Create a new invitation
+        Invitation::create([
+            'event_id' => $event->id,
+            'email' => $request->input('email'),
+            'status' => 'pending',
+        ]);
+
+        // Send the invitation email
+        Mail::to($request->input('email'))->send(new EventInvitation($event));
 
         // Redirect back or show a success message
         return redirect()->back()->with('success', 'Invitation sent successfully');
     }
 
-    // ...
-
-    public function respondInvitation(Request $request, Event $event)
+    public function respondInvitation(Request $request, Invitation $invitation)
     {
         // Validate the request data
         $request->validate([
             'response' => 'required|in:accepted,rejected',
         ]);
 
-        // Retrieve the event details
-        $event = Event::findOrFail($event->id);
-
-        // Update the event status based on the user's response
-        $event->status = $request->input('response');
-        $event->save();
+        // Update the invitation status based on the user's response
+        $invitation->status = $request->input('response');
+        $invitation->save();
 
         // Redirect back or show a success message
         return redirect()->back()->with('success', 'Invitation response recorded successfully');
     }
+
     public function invitations()
-{
-    // Retrieve the invitations for the authenticated user
-    $invitations = auth()->user()->invitations;
+    {
+        // Retrieve the invitations for the authenticated user
+        $invitations = auth()->user()->invitations;
 
-    // Render the invitations view with the invitation data
-    return view('invitations', compact('invitations'));
-}
+        // Render the invitations view with the invitation data
+        return view('invitations', compact('invitations'));
+    }
 
-
-
-// ...
+    // ...
 
     public function store(Request $request)
     {
@@ -143,28 +136,7 @@ class EventController extends Controller
         return redirect()->route('events.show', $event->id)->with('success', 'Event created successfully');
     }
 
-
-
-    public function update(Request $request, Event $event)
-    {
-        // Validate the request data
-        $request->validate([
-            'name' => 'required',
-            'date' => 'required|date',
-            'location' => 'required',
-            'description' => 'required',
-        ]);
-
-        // Update the event details
-        $event->update([
-            'name' => $request->input('name'),
-            'date' => $request->input('date'),
-            'location' => $request->input('location'),
-            'description' => $request->input('description'),
-        ]);
-
-        // Return a response or redirect to the event details page
-    }
+    // ...
 
     public function destroy(Event $event)
     {
