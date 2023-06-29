@@ -22,8 +22,15 @@ Route::group(['middleware' => 'auth'], function(){
     Route::group([
         'prefix' => 'admin',
         'middleware' => 'is_admin',
-        'as' => 'admin',
+        'as' => 'admin.',
     ], function(){
         Route::get('')
     });
+});
+
+Route::group([
+    'prefix' => 'user',
+    'as'=> 'user.',
+], function(){
+    Route::get('')
 })
