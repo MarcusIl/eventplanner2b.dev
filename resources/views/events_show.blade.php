@@ -19,6 +19,12 @@
     @if ($event->organizer)
         <p><strong>Organizer:</strong> {{ $event->organizer->name }}</p>
     @endif
+    @if(Auth::user()->id == $event->organizer_id)
+    <form action="{{ route('events.invite', $event->id) }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-primary">Invite Guests</button>
+    </form>
+@endif
 </body>
 
 </html>
