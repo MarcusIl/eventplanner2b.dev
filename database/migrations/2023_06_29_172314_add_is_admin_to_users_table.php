@@ -8,13 +8,8 @@ class CreateUsersTable extends Migration
 {
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
+        Schema::table('users', function($table){
             $table->boolean('is_admin')->default(false);
-            $table->timestamps();
         });
     }
 
