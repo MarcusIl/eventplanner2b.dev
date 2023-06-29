@@ -54,7 +54,14 @@ class EventController extends Controller
         return view('events_show', compact('event'));
     }
 
+    public function invite(Event $event)
+    {
+        // Retrieve the event details
+        $event = Event::findOrFail($event->id);
 
+        // Render the invite view with the event details
+        return view('invite', compact('event'));
+    }
 
 
 // ...
