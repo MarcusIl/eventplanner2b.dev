@@ -61,10 +61,11 @@ class EventController extends Controller
     {
         // Retrieve the event details
         $event = Event::findOrFail($event->id);
-
-        // Render the invite view with the event details
+    
+        // Render the invitation view with the event details
         return view('invite', compact('event'));
     }
+    
 
     public function sendInvitation(Request $request, Event $event)
     {
@@ -103,6 +104,15 @@ class EventController extends Controller
         // Redirect back or show a success message
         return redirect()->back()->with('success', 'Invitation response recorded successfully');
     }
+    public function invitations()
+{
+    // Retrieve the invitations for the authenticated user
+    $invitations = auth()->user()->invitations;
+
+    // Render the invitations view with the invitation data
+    return view('invitations', compact('invitations'));
+}
+
 
 
 // ...

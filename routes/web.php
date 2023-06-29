@@ -21,6 +21,8 @@ Route::get('/events/{event}/invite', [EventController::class, 'invite'])->name('
 Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
 Route::post('/events/{event}/send-invitation', [EventController::class, 'sendInvitation'])->name('events.sendInvitation');
 Route::post('events/{event}/invite', [EventController::class, 'invite'])->name('events.invite');
+Route::get('/invitations', [EventController::class, 'invitations'])->name('invitations.index');
+
 
 
 

@@ -36,6 +36,11 @@ class Event extends Model
     {
         return $this->hasMany(Task::class);
     }
+    public function invitations()
+{
+    return $this->hasMany(Invitation::class);
+}
+
 
     // Add any other custom methods or relationships here
 }
