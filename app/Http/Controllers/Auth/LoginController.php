@@ -31,14 +31,11 @@ class LoginController extends Controller
     
     public function logout(Request $request)
     {
-        $previousUrl = Session::get('previous_url');
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        if ($previousUrl) {
-            Session::forget('previous_url');
-            return redirect($previousUrl);
-        }
-        return redirect('/');
+    
+        // Redirect the user to the previous URL or a default path
+        return redirect()->back()->with('success', 'You have been logged out.');
     }
 }

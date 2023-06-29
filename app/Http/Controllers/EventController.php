@@ -6,7 +6,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Routing\Redirector;
 
 
 class EventController extends Controller
@@ -38,7 +38,7 @@ class EventController extends Controller
         ]);
     
         // Redirect to the event details page or show a success message
-        return Redirect::route('events.show', $event->id)->with('success', 'Event created successfully');
+        return redirect()->route('events.show', $event->id)->with('success', 'Event created successfully');
     }
     
     
@@ -89,7 +89,7 @@ class EventController extends Controller
         ]);
 
         // Redirect to the event details page or show a success message
-        return Redirect::route('events.show', $event->id)->with('success', 'Event created successfully');
+        return redirect()->route('events.show', $event->id)->with('success', 'Event created successfully');
     }
 
 
