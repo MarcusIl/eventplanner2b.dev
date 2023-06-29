@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Mail\EventInvitation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Mail;
+
 
 
 
@@ -61,6 +64,23 @@ class EventController extends Controller
 
         // Render the invite view with the event details
         return view('invite', compact('event'));
+    }
+
+    public function sendInvitation(Request $request, Event $event)
+    {
+        // Validate the request data
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        // Retrieve the event details
+        $event = Event::findOrFail($event->id);
+
+        // Send the invitation email
+        Mail::to($request->input('email'))->send(new EventInvitation($event));
+
+        // Redirect back or show a success message
+        return redirect()->back()->with('success', 'Invitation sent successfully');
     }
 
 

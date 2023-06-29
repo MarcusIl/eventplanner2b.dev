@@ -19,7 +19,7 @@ Route::post('/events', [EventController::class, 'store'])->name('events.store');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 Route::post('/events/{event}/invite', [EventController::class, 'invite'])->name('events.invite');
 Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
-
+Route::post('/events/{event}/send-invitation', [EventController::class, 'sendInvitation'])->name('events.sendInvitation');
 
 
 

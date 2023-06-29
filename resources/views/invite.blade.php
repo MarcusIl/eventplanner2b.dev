@@ -8,7 +8,7 @@
                     <div class="card-header">Invite Guests</div>
 
                     <div class="card-body">
-                        <form action="{{ route('invitations.send', $event->id) }}" method="POST">
+                        <form action="{{ route('events.sendInvitation', $event->id) }}" method="POST">
                             @csrf
 
                             <div class="form-group">
