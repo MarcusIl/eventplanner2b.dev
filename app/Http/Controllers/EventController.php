@@ -75,11 +75,32 @@ class EventController extends Controller
         // Retrieve the event details
         $event = Event::findOrFail($event->id);
 
-        // Send the invitation email
-        Mail::to($request->input('email'))->send(new EventInvitation($event));
+        // Update the event status to 'accepted' for the invited email
+        $event->status = 'accepted';
+        $event->save();
 
         // Redirect back or show a success message
         return redirect()->back()->with('success', 'Invitation sent successfully');
+    }
+
+    // ...
+
+    public function respondInvitation(Request $request, Event $event)
+    {
+        // Validate the request data
+        $request->validate([
+            'response' => 'required|in:accepted,rejected',
+        ]);
+
+        // Retrieve the event details
+        $event = Event::findOrFail($event->id);
+
+        // Update the event status based on the user's response
+        $event->status = $request->input('response');
+        $event->save();
+
+        // Redirect back or show a success message
+        return redirect()->back()->with('success', 'Invitation response recorded successfully');
     }
 
 

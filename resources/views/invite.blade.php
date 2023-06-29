@@ -2,27 +2,12 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Invite Guests</div>
+        <h1>Event Invitation</h1>
+        <p>You have been invited to the event: {{ $event->name }}</p>
+        <p>Event Date: {{ $event->date }}</p>
+        <p>Location: {{ $event->location }}</p>
+        <p>Description: {{ $event->description }}</p>
 
-                    <div class="card-body">
-                        <form action="{{ route('events.sendInvitation', $event->id) }}" method="POST">
-                            @csrf
-
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input type="email" name="email" class="form-control" required>
-                            </div>
-
-                            <!-- Add more input fields for additional guest information if needed -->
-
-                            <button type="submit" class="btn btn-primary">Send Invitation</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <p>Invitation sent successfully.</p>
     </div>
 @endsection
