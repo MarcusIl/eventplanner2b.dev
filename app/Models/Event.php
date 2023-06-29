@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 
 class Event extends Model
 {
@@ -24,4 +22,20 @@ class Event extends Model
         return $this->belongsTo(User::class, 'organizer_id');
     }
 
+    public function guests()
+    {
+        return $this->belongsToMany(User::class, 'event_guest', 'event_id', 'user_id');
+    }
+
+    public function budget()
+    {
+        return $this->hasMany(Budget::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    // Add any other custom methods or relationships here
 }
