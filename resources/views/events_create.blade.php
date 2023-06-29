@@ -10,20 +10,20 @@
     <form action="{{ route('events.store') }}" method="POST">
         @csrf
         <div>
-            <label for="event_name">Event Name</label>
-            <input type="text" name="event_name">
+            <label for="name">Event Name</label>
+            <input type="text" name="name">
         </div>
         <div>
-            <label for="event_date">Event Date</label>
-            <input type="date" name="event_date">
+            <label for="date">Event Date</label>
+            <input type="date" name="date">
         </div>
         <div>
-            <label for="event_location">Event Location</label>
-            <input type="text" name="event_location">
+            <label for="location">Event Location</label>
+            <input type="text" name="location">
         </div>
         <div>
-            <label for="event_description">Event Description</label>
-            <textarea name="event_description"></textarea>
+            <label for="description">Event Description</label>
+            <textarea name="description"></textarea>
         </div>
         <button type="submit">Create</button>
     </form>

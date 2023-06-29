@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class EventController extends Controller
@@ -40,15 +41,19 @@ class EventController extends Controller
     
     
 
+    // EventController.php
+
     public function show(Event $event)
     {
         // Fetch the event details from the database
         $event = Event::findOrFail($event->id);
 
-        // Return a response or render a view with the event details
+        // Pass the event data to the events_show view
+        return view('events_show', compact('event'));
     }
 
-    use Illuminate\Support\Facades\Auth;
+
+
 
 // ...
 
