@@ -18,9 +18,15 @@ Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
 Route::post('/events', [EventController::class, 'store'])->name('events.store');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
-Route::post('/events/{event}/invite', [EventController::class, 'invite'])->name('events.invite');
+Route::get('/events/{event}/invite', [EventController::class, 'invite'])->name('events.invite');
 Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
 Route::post('/events/{event}/send-invitation', [EventController::class, 'sendInvitation'])->name('events.sendInvitation');
+Route::post('events/{event}/invite', [EventController::class, 'invite'])->name('events.invite');
+Route::get('/invitations', [EventController::class, 'invitations'])->name('invitations.index');
+
+
+
+
 
 // Tasks
 

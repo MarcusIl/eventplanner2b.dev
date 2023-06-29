@@ -15,4 +15,7 @@
     @endif
 
     <a href="{{ route('events.create') }}" class="btn btn-primary">Create Event</a>
+    <br>
+    <a href="{{ route('invitations.index') }}">My Invitations</a>
+
 @endsection
