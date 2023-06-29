@@ -15,7 +15,7 @@
 
             @foreach ($events as $event)
                 <li>
-                    {{ $event->event_name }}
+                    {{ $event->name }}
                 </li>
             @endforeach
 
