@@ -20,18 +20,18 @@ class EventController extends Controller
         return view('events_create');
         // Validate the request data
         $request->validate([
-            'event_name' => 'required',
-            'event_date' => 'required|date',
-            'event_location' => 'required',
-            'event_description' => 'required',
+            'name' => 'required',
+            'date' => 'required|date',
+            'location' => 'required',
+            'description' => 'required',
         ]);
     
         // Create a new event
         $event = Event::create([
-            'event_name' => $request->input('event_name'),
-            'event_date' => $request->input('event_date'),
-            'event_location' => $request->input('event_location'),
-            'event_description' => $request->input('event_description'),
+            'name' => $request->input('name'),
+            'date' => $request->input('date'),
+            'location' => $request->input('location'),
+            'description' => $request->input('description'),
         ]);
     
         // Redirect to the event details page or show a success message
@@ -48,45 +48,54 @@ class EventController extends Controller
         // Return a response or render a view with the event details
     }
 
+    use Illuminate\Support\Facades\Auth;
+
+// ...
+
     public function store(Request $request)
     {
-    // Validate the request data
-    $request->validate([
-        'event_name' => 'required',
-        'event_date' => 'required|date',
-        'event_location' => 'required',
-        'event_description' => 'required',
-    ]);
+        // Validate the request data
+        $request->validate([
+            'name' => 'required',
+            'date' => 'required|date',
+            'location' => 'required',
+            'description' => 'required',
+        ]);
 
-    // Create a new event
-    $event = Event::create([
-        'event_name' => $request->input('event_name'),
-        'event_date' => $request->input('event_date'),
-        'event_location' => $request->input('event_location'),
-        'event_description' => $request->input('event_description'),
-    ]);
+        // Get the authenticated user's ID
+        $organizerId = Auth::id();
 
-    // Redirect to the event details page or show a success message
-    return Redirect::route('events.show', $event->id)->with('success', 'Event created successfully');
+        // Create a new event with the organizer_id
+        $event = Event::create([
+            'name' => $request->input('name'),
+            'date' => $request->input('date'),
+            'location' => $request->input('location'),
+            'description' => $request->input('description'),
+            'organizer_id' => $organizerId,
+        ]);
+
+        // Redirect to the event details page or show a success message
+        return Redirect::route('events.show', $event->id)->with('success', 'Event created successfully');
     }
+
 
 
     public function update(Request $request, Event $event)
     {
         // Validate the request data
         $request->validate([
-            'event_name' => 'required',
-            'event_date' => 'required|date',
-            'event_location' => 'required',
-            'event_description' => 'required',
+            'name' => 'required',
+            'date' => 'required|date',
+            'location' => 'required',
+            'description' => 'required',
         ]);
 
         // Update the event details
         $event->update([
-            'event_name' => $request->input('event_name'),
-            'event_date' => $request->input('event_date'),
-            'event_location' => $request->input('event_location'),
-            'event_description' => $request->input('event_description'),
+            'name' => $request->input('name'),
+            'date' => $request->input('date'),
+            'location' => $request->input('location'),
+            'description' => $request->input('description'),
         ]);
 
         // Return a response or redirect to the event details page
