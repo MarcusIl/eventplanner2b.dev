@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 
 
@@ -115,5 +115,15 @@ class EventController extends Controller
 
         // Redirect to a different page or show a success message
         return redirect()->route('events.index')->with('success', 'Event deleted successfully');
+    }
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (!Auth::check()) {
+                Session::put('previous_url', $request->url());
+            }
+            return $next($request);
+        });
     }
 }
