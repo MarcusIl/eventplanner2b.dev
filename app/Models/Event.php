@@ -24,8 +24,10 @@ class Event extends Model
 
     public function guests()
     {
-        return $this->belongsToMany(User::class, 'event_guest', 'event_id', 'user_id');
+        return $this->belongsToMany(User::class, 'invitations', 'event_id', 'user_id')
+            ->wherePivot('status', 'accepted');
     }
+    
 
     public function budget()
     {

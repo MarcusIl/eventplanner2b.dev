@@ -10,14 +10,11 @@
     @if ($event->organizer)
         <p><strong>Organizer:</strong> {{ $event->organizer->name }}</p>
     @endif
+    <p><strong>Guest list:</strong><p>
+    @foreach ($event->guests as $guest)
+    <p>{{ $guest->name }}</p>
+    @endforeach
 
-    <!-- Button to invite guests -->
-    @if (auth()->check() && $event->organizer_id == auth()->user()->id)
-        <form action="{{ route('events.invite', $event->id) }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-primary">Invite Guests</button>
-        </form>
-    @endif
 
     <!-- Button to create tasks -->
     @if (auth()->check() && $event->organizer_id == auth()->user()->id)
@@ -38,8 +35,6 @@
     @if (auth()->check() && $event->organizer_id == auth()->user()->id)
         <form action="{{ route('events.invite', $event->id) }}" method="POST">
             @csrf
-            <label for="name">Guest Name:</label>
-            <input type="text" name="name" id="name" required>
             <button type="submit" class="btn btn-primary">Invite Guests</button>
         </form>
     @endif
