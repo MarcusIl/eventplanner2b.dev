@@ -64,18 +64,14 @@ class EventController extends Controller
     }
     
 
-    public function invite(Event $event)
-    {
-        // Retrieve the event details
-    $event = Event::findOrFail($event->id);
-    
-    // Check if there is a success message in the session
-    $successMessage = Session::get('success');
-    
-    // Render the invite view with the event details and success message
-    return view('invite', compact('event', 'successMessage'));
-    }
+    public function invite($id)
+{
+    $event = Event::findOrFail($id);
+    $successMessage = session('successMessage');
+    $errorMessage = session('errorMessage');
 
+    return view('invitation', compact('event', 'successMessage', 'errorMessage'));
+}
     public function sendInvitation(Request $request, Event $event)
 {
     // Validate the request data
