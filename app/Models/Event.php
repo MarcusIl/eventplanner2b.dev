@@ -22,11 +22,15 @@ class Event extends Model
         return $this->belongsTo(User::class, 'organizer_id');
     }
 
-    public function guests()
-    {
-        return $this->belongsToMany(User::class, 'invitations', 'event_id', 'user_id')
-            ->wherePivot('status', 'accepted');
-    }
+    // Event.php (Event model)
+
+public function guests()
+{
+    return $this->belongsToMany(User::class, 'invitations', 'event_id', 'user_id')
+                ->withPivot('status')
+                ->withTimestamps();
+}
+
     
 
     public function budgets()

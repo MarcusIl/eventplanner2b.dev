@@ -67,7 +67,6 @@ class EventController extends Controller
     
         // Fetch the tasks associated with the event
         $tasks = $event->tasks;
-
         $event = Event::with('guests')->findOrFail($event->id);
         $event->load('budgets'); // Eager load the budgets
 
@@ -141,28 +140,43 @@ public function sendInvitation(Request $request, $event_id)
 
 
 
-public function respondInvitation($invitation_id, $response)
+public function respondInvitation(Request $request, $invitation_id)
 {
+    // Get the response (accepted or rejected) from the request
+    $response = $request->input('response');
+
     // Find the invitation based on the invitation_id
     $invitation = Invitation::findOrFail($invitation_id);
 
     // Update the invitation status based on the response
     if ($response === 'accepted') {
-        $invitation->status = 'accepted';
+        // Add the invited user to the event's guest list
+        $event = $invitation->event;
+        $event->guests()->attach($invitation->user_id);
+
+        // Delete the invitation
+        $invitation->delete();
+
+        return redirect()->back()->with('success', 'Invitation accepted! You have been added to the guest list.');
     } elseif ($response === 'rejected') {
         $invitation->status = 'rejected';
+        $invitation->save();
+
+        return redirect()->back()->with('success', 'Invitation rejected.');
     }
 
-    $invitation->save();
-
-    // Delete the invitation if it has been accepted or rejected
-    if ($invitation->status === 'accepted' || $invitation->status === 'rejected') {
-        $invitation->delete();
-    }
-
-    // Redirect back or show a success message
-    return redirect()->back()->with('success', 'Invitation response recorded successfully.');
+    // Redirect back or show an error message
+    return redirect()->back()->with('error', 'Invalid invitation response.');
 }
+
+
+
+
+
+
+
+
+
 
     
 

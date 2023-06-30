@@ -25,6 +25,7 @@ Route::post('/events/{event}/send-invitation', [EventController::class, 'sendInv
 Route::get('/invitations', [EventController::class, 'invitations'])->name('invitations.index');
 Route::match(['get', 'post'], '/invitations/{invitation}/respond', [EventController::class, 'respondInvitation'])->name('invitations.respond');
 
+
 // Tasks
 Route::get('/tasks/create/{event}', [TaskController::class, 'showCreateForm'])->name('tasks.create');
 Route::post('/tasks/create/{event}', [TaskController::class, 'create']);
