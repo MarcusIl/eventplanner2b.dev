@@ -9,6 +9,11 @@
         <p>Do you want to send another invitation?</p>
         <a href="{{ route('events.invite', $event->id) }}">Send another invitation</a>
     @else
+        @if ($errorMessage)
+            <div class="alert alert-danger">
+                {{ $errorMessage }}
+            </div>
+        @endif
         <p>You have been invited to the event: {{ $event->name }}</p>
         <p><strong>Event Date:</strong> {{ $event->date }}</p>
         <p><strong>Event Location:</strong> {{ $event->location }}</p>
