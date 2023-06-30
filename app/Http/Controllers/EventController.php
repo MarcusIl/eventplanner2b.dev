@@ -70,7 +70,7 @@ class EventController extends Controller
     $successMessage = session('successMessage');
     $errorMessage = session('errorMessage');
 
-    return view('invitation', compact('event', 'successMessage', 'errorMessage'));
+    return view('invitations', compact('event', 'successMessage', 'errorMessage'));
 }
     public function sendInvitation(Request $request, Event $event)
 {
@@ -125,13 +125,14 @@ class EventController extends Controller
     }
 
     public function invitations()
-    {
-        // Retrieve the invitations for the authenticated user
-        $invitations = auth()->user()->invitations;
+{
+    $invitations = Invitation::all(); // Retrieve all invitations
 
-        // Render the invitations view with the invitation data
-        return view('invitations', compact('invitations'));
-    }
+    return view('invitations', compact('invitations'));
+}
+
+
+
 
     // ...
 

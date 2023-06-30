@@ -44,8 +44,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
     public function invitations()
-{
-    return $this->hasMany(Invitation::class);
-}
+    {
+        return $this->hasMany(Invitation::class);
+    }
+    
 
 }
