@@ -89,6 +89,9 @@ class EventController extends Controller
     {
 
     $event = Event::findOrFail($id);
+    if ($event->organizer_id !== auth()->id()) {
+        abort(403, 'Unauthorized');
+    }
     $successMessage = session('successMessage');
     $errorMessage = session('errorMessage');
 
@@ -100,9 +103,7 @@ public function sendInvitation(Request $request, $event_id)
     // Retrieve the event based on the event_id
     $event = Event::findOrFail($event_id);
 
-    if (Gate::denies('organizer', $event)) {
-        abort(403, 'Unauthorized');
-    }
+
 
     // Validate the request data
     $request->validate([
