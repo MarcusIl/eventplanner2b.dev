@@ -19,10 +19,11 @@
         <p><strong>Event Description:</strong> {{ $event->description }}</p>
 
         <form action="{{ route('events.sendInvitation', $event->id) }}" method="POST">
-            @csrf
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
-            <button type="submit" class="btn btn-primary">Send Invitation</button>
-        </form>
+    @csrf
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" required>
+    <button type="submit" class="btn btn-primary">Send Invitation</button>
+</form>
+
     @endif
 @endsection
