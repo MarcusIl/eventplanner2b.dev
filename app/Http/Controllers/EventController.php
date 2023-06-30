@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\User;
 use App\Models\Invitation;
 use App\Mail\EventInvitation;
 use Illuminate\Support\Facades\Session;
