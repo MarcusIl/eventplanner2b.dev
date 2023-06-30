@@ -25,8 +25,7 @@ class EventController extends Controller
     public function showCreateForm()
     {
         // Render the create event form view
-        return redirect()->route('events.createForm');
-
+        return view('events_create');
     }
     
     public function create(Request $request)
@@ -83,16 +82,14 @@ class EventController extends Controller
     return view('invitations', compact('invitations'));
 }
 
-public function invite($id)
+    public function invite($id)
 {
     $event = Event::findOrFail($id);
     $successMessage = session('successMessage');
     $errorMessage = session('errorMessage');
 
-    return view('invite', compact('event', 'successMessage', 'errorMessage'));
+    return view('invitations', compact('event', 'successMessage', 'errorMessage'));
 }
-
-
 public function sendInvitation(Request $request, $event_id)
 {
     // Retrieve the event based on the event_id
@@ -108,33 +105,29 @@ public function sendInvitation(Request $request, $event_id)
 
     if (!$user) {
         // User not found, handle the error accordingly
-        return redirect()->back()->with('error', 'User with the provided email not found.')->withInput();
+        return redirect()->back()->with('error', 'User with the provided email not found.');
     }
 
-    $email = $request->input('email');
+    // Check if the user has already been invited to the event
     $existingInvitation = Invitation::where('event_id', $event->id)
-        ->where('email', $email)
+        ->where('user_id', $user->id)
         ->first();
 
     if ($existingInvitation) {
-        return redirect()->back()->with('error', 'User with this email has already been invited')->withInput();
+        // User has already been invited, handle the error accordingly
+        return redirect()->back()->with('error', 'User with this email has already been invited.');
     }
 
     // Create a new invitation and set the event_id and user_id
     $invitation = new Invitation();
     $invitation->event_id = $event->id;
-    $invitation->user_id = $user->id; // Set the user_id based on the matched user
+    $invitation->user_id = $user->id;
     $invitation->status = 'pending';
     $invitation->save();
 
     // Redirect back or show a success message
     return redirect()->back()->with('success', 'Invitation successfully sent! Do you wish to send another one?');
 }
-
-
-
-
-
 
 
     public function respondInvitation(Request $request, Invitation $invitation)
