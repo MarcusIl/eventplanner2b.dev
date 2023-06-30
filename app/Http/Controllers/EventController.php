@@ -21,6 +21,12 @@ class EventController extends Controller
         return view('events', compact('events'));
     }
 
+    public function showCreateForm()
+    {
+        // Render the create event form view
+        return view('events_create');
+    }
+    
     public function create(Request $request)
     {
         // Validate the request data

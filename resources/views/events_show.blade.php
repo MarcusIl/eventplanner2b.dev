@@ -20,11 +20,13 @@
     @endif
 
     <!-- Button to create budget -->
-    <form action="{{ route('budgets.create', $event->id) }}" method="GET">
-        @csrf
-        <!-- Add your form fields here -->
-        <button type="submit" class="btn btn-primary">Create Budget</button>
-    </form>
+    @if (auth()->check() && $event->organizer_id == auth()->user()->id)
+        <form action="{{ route('budgets.create', $event->id) }}" method="GET">
+            @csrf
+            <!-- Add your form fields here -->
+            <button type="submit" class="btn btn-primary">Create Budget</button>
+        </form>
+    @endif
 
 
     <!-- Form to invite guests -->
