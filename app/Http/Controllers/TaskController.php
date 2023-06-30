@@ -10,6 +10,9 @@ class TaskController extends Controller
 {
     public function showCreateForm(Event $event)
     {
+        if ($event->organizer_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
         return view('tasks_create', compact('event'));
     }
     

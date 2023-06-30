@@ -9,6 +9,9 @@ class BudgetController extends Controller
 {
     public function createForm(Event $event)
     {
+        if ($event->organizer_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
         return view('budgets_create', compact('event'));
     }
 

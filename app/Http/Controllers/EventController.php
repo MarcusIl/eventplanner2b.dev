@@ -76,24 +76,30 @@ class EventController extends Controller
     }
     
     public function invitations(Event $event)
-{
+    {
     $invitations = $event->invitations;
 
     return view('invitations', compact('invitations'));
-}
+    }
 
     public function invite($id)
-{
+    {
+
     $event = Event::findOrFail($id);
     $successMessage = session('successMessage');
     $errorMessage = session('errorMessage');
 
     return view('invite', compact('event', 'successMessage', 'errorMessage'));
-}
+    }
 public function sendInvitation(Request $request, $event_id)
 {
+    
     // Retrieve the event based on the event_id
     $event = Event::findOrFail($event_id);
+
+    if (Gate::denies('organizer', $event)) {
+        abort(403, 'Unauthorized');
+    }
 
     // Validate the request data
     $request->validate([

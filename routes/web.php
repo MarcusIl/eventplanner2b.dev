@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\BudgetController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +20,7 @@ Route::post('/events', [EventController::class, 'create'])->name('events.store')
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 Route::get('/events/{event}/invite', [EventController::class, 'invite'])->name('events.invite');
 Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+Route::post('events/{event}/invite', [EventController::class, 'invite'])->name('events.invite');
 Route::post('/events/{event}/send-invitation', [EventController::class, 'sendInvitation'])->name('events.sendInvitation');
 Route::get('/invitations', [EventController::class, 'invitations'])->name('invitations.index');
 Route::post('/invitations/{invitation}/respond', [EventController::class, 'respondInvitation'])->name('invitations.respond');
