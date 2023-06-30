@@ -67,10 +67,13 @@ class EventController extends Controller
     public function invite(Event $event)
     {
         // Retrieve the event details
-        $event = Event::findOrFail($event->id);
-
-        // Render the invitation view with the event details
-        return view('invite', compact('event'));
+    $event = Event::findOrFail($event->id);
+    
+    // Check if there is a success message in the session
+    $successMessage = Session::get('success');
+    
+    // Render the invite view with the event details and success message
+    return view('invite', compact('event', 'successMessage'));
     }
 
     public function sendInvitation(Request $request, Event $event)
@@ -90,6 +93,14 @@ class EventController extends Controller
         // User not found, handle the error accordingly
         return redirect()->back()->with('error', 'User with the provided email not found.');
     }
+    $email = $request->input('email');
+    $existingInvitation = Invitation::where('event_id', $event->id)
+        ->where('email', $email)
+        ->first();
+
+    if ($existingInvitation) {
+        return redirect()->back()->with('error', 'User with this email has already been invited');
+    }
 
     // Create a new invitation and set the event_id and user_id
     $invitation = new Invitation();
@@ -99,7 +110,7 @@ class EventController extends Controller
     $invitation->save();
 
     // Redirect back or show a success message
-    return redirect()->back()->with('success', 'Invitation sent successfully');
+    return redirect()->back()->with('success', 'Invitation successfully sent! Do you wish to send another one?');
 }
 
     public function respondInvitation(Request $request, Invitation $invitation)
