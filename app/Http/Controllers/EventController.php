@@ -83,14 +83,16 @@ class EventController extends Controller
     return view('invitations', compact('invitations'));
 }
 
-    public function invite($id)
+public function invite($id)
 {
     $event = Event::findOrFail($id);
     $successMessage = session('successMessage');
     $errorMessage = session('errorMessage');
 
-    return view('invitations', compact('event', 'successMessage', 'errorMessage'));
+    return view('invite', compact('event', 'successMessage', 'errorMessage'));
 }
+
+
 public function sendInvitation(Request $request, $event_id)
 {
     // Retrieve the event based on the event_id
@@ -106,29 +108,33 @@ public function sendInvitation(Request $request, $event_id)
 
     if (!$user) {
         // User not found, handle the error accordingly
-        return redirect()->back()->with('error', 'User with the provided email not found.');
+        return redirect()->back()->with('error', 'User with the provided email not found.')->withInput();
     }
 
-    // Check if the user has already been invited to the event
+    $email = $request->input('email');
     $existingInvitation = Invitation::where('event_id', $event->id)
-        ->where('user_id', $user->id)
+        ->where('email', $email)
         ->first();
 
     if ($existingInvitation) {
-        // User has already been invited, handle the error accordingly
-        return redirect()->back()->with('error', 'User with this email has already been invited.');
+        return redirect()->back()->with('error', 'User with this email has already been invited')->withInput();
     }
 
     // Create a new invitation and set the event_id and user_id
     $invitation = new Invitation();
     $invitation->event_id = $event->id;
-    $invitation->user_id = $user->id;
+    $invitation->user_id = $user->id; // Set the user_id based on the matched user
     $invitation->status = 'pending';
     $invitation->save();
 
     // Redirect back or show a success message
     return redirect()->back()->with('success', 'Invitation successfully sent! Do you wish to send another one?');
 }
+
+
+
+
+
 
 
     public function respondInvitation(Request $request, Invitation $invitation)
