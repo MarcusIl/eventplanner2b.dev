@@ -88,7 +88,7 @@ class EventController extends Controller
     $successMessage = session('successMessage');
     $errorMessage = session('errorMessage');
 
-    return view('invitations', compact('event', 'successMessage', 'errorMessage'));
+    return view('invite', compact('event', 'successMessage', 'errorMessage'));
 }
 public function sendInvitation(Request $request, $event_id)
 {
