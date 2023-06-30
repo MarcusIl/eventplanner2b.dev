@@ -35,7 +35,7 @@ Route::get('/budgets/create/{event}', [BudgetController::class, 'createForm'])->
 Route::post('/budgets/create/{event}', [BudgetController::class, 'create']);
 Route::patch('/budgets/{event}/{budget}', [BudgetController::class, 'update'])->name('budgets.update');
 Route::delete('/budgets/{event}/{budget}', [BudgetController::class, 'delete'])->name('budgets.delete');
-
+//
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
