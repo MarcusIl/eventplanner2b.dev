@@ -75,12 +75,14 @@ class EventController extends Controller
         return view('events_show', compact('event', 'tasks'));
     }
     
-    public function invitations(Event $event)
+    public function invitations()
 {
-    $invitations = $event->invitations;
+    $user = auth()->user();
+    $invitations = Invitation::where('user_id', $user->id)->get();
 
-    return view('invitations', compact('invitations'));
+    return view('invitations_index', compact('invitations'));
 }
+    
 
     public function invite($id)
 {
@@ -128,6 +130,7 @@ public function sendInvitation(Request $request, $event_id)
     // Redirect back or show a success message
     return redirect()->back()->with('success', 'Invitation successfully sent! Do you wish to send another one?');
 }
+
 
 
     public function respondInvitation(Request $request, Invitation $invitation)
