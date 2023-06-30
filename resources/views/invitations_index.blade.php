@@ -15,8 +15,9 @@
                     <p>Description: {{ $invitation->event->description }}</p>
 
                     @if ($invitation->status === 'pending')
-                        <a href="{{ route('invitations.respond', $invitation->id, 'response=accepted') }}">Accept</a>
-                        <a href="{{ route('invitations.respond', $invitation->id, 'response=rejected') }}">Reject</a>
+                    <a href="{{ route('invitations.respond', ['invitation' => $invitation->id, 'response' => 'accepted']) }}">Accept</a>
+<a href="{{ route('invitations.respond', ['invitation' => $invitation->id, 'response' => 'rejected']) }}">Reject</a>
+
                     @else
                         <p>Status: {{ $invitation->status }}</p>
                     @endif
