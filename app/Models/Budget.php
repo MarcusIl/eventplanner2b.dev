@@ -9,6 +9,8 @@ class Budget extends Model
 {
     use HasFactory;
 
+    protected $table = 'budget';
+    
     protected $fillable = [
         'event_id',
         'name',

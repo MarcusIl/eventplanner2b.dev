@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\BudgetController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,6 +34,14 @@ Route::post('/invitations/{invitation}/respond', [EventController::class, 'respo
 
 Route::get('/tasks/create/{event}', [TaskController::class, 'showCreateForm'])->name('tasks.create');
 Route::post('/tasks/create/{event}', [TaskController::class, 'create']);
+
+// Budget
+
+Route::post('/budgets/create/{event}', [BudgetController::class, 'create'])->name('budgets.create');
+Route::patch('/budgets/{event}/{budget}', [BudgetController::class, 'update'])->name('budget.update');
+Route::delete('/budgets/{event}/{budget}', [BudgetController::class, 'delete'])->name('budget.delete');
+Route::get('/budgets/create/{event}', [BudgetController::class, 'createForm'])->name('budgets.create');
+Route::post('/budgets/create/{event}', [BudgetController::class, 'create']);
 
 
 Auth::routes();

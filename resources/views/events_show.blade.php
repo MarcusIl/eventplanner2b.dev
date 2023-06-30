@@ -24,6 +24,12 @@
         </form>
     @endif
 
+    <!-- Button to create budget -->
+    <form action="{{ route('budgets.create', $event->id) }}" method="POST">
+        @csrf
+        <!-- Add your form fields here -->
+        <button type="submit" class="btn btn-primary">Create Budget</button>
+    </form>
 
     <!-- Form to invite guests -->
     @if (auth()->check() && $event->organizer_id == auth()->user()->id)
