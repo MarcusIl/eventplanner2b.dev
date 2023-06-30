@@ -141,20 +141,28 @@ public function sendInvitation(Request $request, $event_id)
 
 
 
-    public function respondInvitation(Request $request, Invitation $invitation)
-    {
-        // Validate the request data
-        $request->validate([
-            'response' => 'required|in:accepted,rejected',
-        ]);
+public function respondInvitation($invitation_id, $response)
+{
+    // Find the invitation based on the invitation_id
+    $invitation = Invitation::findOrFail($invitation_id);
 
-        // Update the invitation status based on the user's response
-        $invitation->status = $request->input('response');
-        $invitation->save();
-
-        // Redirect back or show a success message
-        return redirect()->back()->with('success', 'Invitation response recorded successfully');
+    // Update the invitation status based on the response
+    if ($response === 'accepted') {
+        $invitation->status = 'accepted';
+    } elseif ($response === 'rejected') {
+        $invitation->status = 'rejected';
     }
+
+    $invitation->save();
+
+    // Delete the invitation if it has been accepted or rejected
+    if ($invitation->status === 'accepted' || $invitation->status === 'rejected') {
+        $invitation->delete();
+    }
+
+    // Redirect back or show a success message
+    return redirect()->back()->with('success', 'Invitation response recorded successfully.');
+}
 
     
 
