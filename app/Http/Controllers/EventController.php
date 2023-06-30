@@ -57,6 +57,7 @@ class EventController extends Controller
         $tasks = $event->tasks;
 
         $event = Event::with('guests')->findOrFail($event->id);
+        $event->load('budgets'); // Eager load the budgets
 
     
         // Pass the event and tasks data to the events_show view

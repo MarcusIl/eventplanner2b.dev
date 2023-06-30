@@ -40,8 +40,11 @@ Route::post('/tasks/create/{event}', [TaskController::class, 'create']);
 Route::post('/budgets/create/{event}', [BudgetController::class, 'create'])->name('budgets.create');
 Route::patch('/budgets/{event}/{budget}', [BudgetController::class, 'update'])->name('budget.update');
 Route::delete('/budgets/{event}/{budget}', [BudgetController::class, 'delete'])->name('budget.delete');
-Route::get('/budgets/create/{event}', [BudgetController::class, 'createForm'])->name('budgets.create');
 Route::post('/budgets/create/{event}', [BudgetController::class, 'create']);
+Route::get('/budgets/create/{event}', [BudgetController::class, 'create'])->name('budgets.create');
+Route::get('/budgets/create/{event}', [BudgetController::class, 'createForm'])->name('budgets.create');
+Route::delete('/budgets/{event}/{budget}', [BudgetController::class, 'delete'])->name('budgets.delete');
+
 
 
 Auth::routes();
