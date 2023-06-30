@@ -25,7 +25,8 @@ class EventController extends Controller
     public function showCreateForm()
     {
         // Render the create event form view
-        return view('events_create');
+        return redirect()->route('events.createForm');
+
     }
     
     public function create(Request $request)
@@ -38,12 +39,16 @@ class EventController extends Controller
             'description' => 'required',
         ]);
 
-        // Create a new event
+        // Get the authenticated user's ID
+        $organizerId = Auth::id();
+
+        // Create a new event with the organizer_id
         $event = Event::create([
             'name' => $request->input('name'),
             'date' => $request->input('date'),
             'location' => $request->input('location'),
             'description' => $request->input('description'),
+            'organizer_id' => $organizerId,
         ]);
 
         // Redirect to the event details page or show a success message
@@ -142,10 +147,6 @@ public function sendInvitation(Request $request, $event_id)
     }
 
     
-
-
-
-
 
     // ...
 

@@ -15,7 +15,8 @@ Route::prefix('admin')->middleware('auth')->group(function(){
 });
 
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
-Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+Route::get('/events/create', [EventController::class, 'showCreateForm'])->name('events.createForm');
+Route::post('/events/create', [EventController::class, 'create'])->name('events.create');
 Route::post('/events', [EventController::class, 'store'])->name('events.store');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 Route::get('/events/{event}/invite', [EventController::class, 'invite'])->name('events.invite');
@@ -24,9 +25,6 @@ Route::post('/events/{event}/send-invitation', [EventController::class, 'sendInv
 Route::post('events/{event}/invite', [EventController::class, 'invite'])->name('events.invite');
 Route::get('/invitations', [EventController::class, 'invitations'])->name('invitations.index');
 Route::post('/invitations/{invitation}/respond', [EventController::class, 'respondInvitation'])->name('invitations.respond');
-
-
-
 
 
 // Tasks
