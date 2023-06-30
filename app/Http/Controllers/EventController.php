@@ -78,14 +78,18 @@ class EventController extends Controller
     return view('invitations', compact('invitations'));
 }
 
-    public function invite($id)
+public function invite(Event $event)
 {
-    $event = Event::findOrFail($id);
-    $successMessage = session('successMessage');
-    $errorMessage = session('errorMessage');
+    // Retrieve the event details
+    $event = Event::findOrFail($event->id);
 
-    return view('invitations', compact('event', 'successMessage', 'errorMessage'));
+    // Check if the invitation has been sent successfully
+    $successMessage = session('success');
+
+    // Render the invitation view with the event details and success message
+    return view('invite', compact('event', 'successMessage'));
 }
+
 public function sendInvitation(Request $request, $event_id)
 {
     // Retrieve the event based on the event_id
@@ -121,9 +125,14 @@ public function sendInvitation(Request $request, $event_id)
     $invitation->status = 'pending';
     $invitation->save();
 
-    // Redirect back or show a success message
-    return redirect()->back()->with('success', 'Invitation successfully sent! Do you wish to send another one?');
+    // Redirect to the invite view with appropriate data
+    return view('invite', [
+        'event' => $event,
+        'successMessage' => 'Invitation successfully sent! Do you wish to send another one?',
+    ]);
 }
+
+
 
 
     public function respondInvitation(Request $request, Invitation $invitation)
