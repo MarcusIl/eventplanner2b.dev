@@ -69,8 +69,10 @@ class EventController extends Controller
         
         // Fetch the tasks associated with the event
         $tasks = $event->tasks;
-        $event = Event::with('guests')->findOrFail($event->id);
-        $event->load('budgets'); // Eager load the budgets
+
+        $event->load(['invitations' => function ($query) {
+            $query->where('status', 'accepted');
+        }, 'invitations.user']);
 
     
         // Pass the event and tasks data to the events_show view
@@ -152,12 +154,13 @@ public function respondInvitation(Request $request, $invitation_id)
 
     // Update the invitation status based on the response
     if ($response === 'accepted') {
-        // Add the invited user to the event's guest list
+        // Add the invited user to the event's guest list if not already added
         $event = $invitation->event;
-        $event->guests()->attach($invitation->user_id);
+        $event->guests()->syncWithoutDetaching([$invitation->user_id]);
 
-        // Delete the invitation
-        $invitation->delete();
+        // Update the invitation status to "accepted"
+        $invitation->status = 'accepted';
+        $invitation->save();
 
         return redirect()->back()->with('success', 'Invitation accepted! You have been added to the guest list.');
     } elseif ($response === 'rejected') {
@@ -172,15 +175,6 @@ public function respondInvitation(Request $request, $invitation_id)
 }
 
 
-
-
-
-
-
-
-
-
-    
 
     // ...
 
@@ -214,8 +208,12 @@ public function respondInvitation(Request $request, $invitation_id)
 
     public function destroy(Event $event)
     {
+        $event->invitations()->delete();
+        $event->tasks()->delete();
+        $event->budgets()->delete();
         // Delete the event
         $event->delete();
+
 
         // Redirect to a different page or show a success message
         return redirect()->route('events.index')->with('success', 'Event deleted successfully');

@@ -24,7 +24,7 @@ Route::post('events/{event}/invite', [EventController::class, 'invite'])->name('
 Route::post('/events/{event}/send-invitation', [EventController::class, 'sendInvitation'])->name('events.sendInvitation');
 Route::get('/invitations', [EventController::class, 'invitations'])->name('invitations.index');
 Route::match(['get', 'post'], '/invitations/{invitation}/respond', [EventController::class, 'respondInvitation'])->name('invitations.respond');
-Route::post('/invitations/{invitation}/respond', [EventController::class, 'respondInvitation'])->name('invitations.respond');
+
 
 
 

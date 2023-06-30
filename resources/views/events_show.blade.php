@@ -11,15 +11,16 @@
         <p><strong>Organizer:</strong> {{ $event->organizer->name }}</p>
     @endif
     <p><strong>Guest List:</strong></p>
-    @if ($event->guests->isEmpty())
-        <p>No guests found.</p>
-    @else
-        <ul>
-            @foreach ($event->guests as $guest)
-                <li>{{ $guest->name }}</li>
-            @endforeach
-        </ul>
-    @endif
+@if ($event->invitations->isEmpty())
+    <p>No guests found.</p>
+@else
+    <ul>
+        @foreach ($event->invitations as $invitation)
+            <li>{{ $invitation->user->name }}</li>
+        @endforeach
+    </ul>
+@endif
+
 
     <!-- Button to create tasks -->
     @if (auth()->check() && $event->organizer_id == auth()->user()->id)

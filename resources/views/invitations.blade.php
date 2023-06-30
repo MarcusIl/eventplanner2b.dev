@@ -20,7 +20,7 @@
                         <td>{{ $invitation->status }}</td>
                         <td>
                             @if ($invitation->status === 'pending')
-                                <form action="{{ route('invitations.respond', $invitation->id) }}" method="POST">
+                            <form action="{{ route('invitations.respond', $invitation->id) }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="response" value="accepted">
                                     <button type="submit">Accept</button>

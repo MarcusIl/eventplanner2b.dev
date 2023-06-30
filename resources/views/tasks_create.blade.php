@@ -18,16 +18,16 @@
             <textarea name="task_description" id="task_description" class="form-control" rows="5" required></textarea>
         </div>
 
-<!-- Task Assignee -->
-<div class="form-group">
+        <div class="form-group">
     <label for="assignee">Assignee</label>
     <select name="user_id" id="assignee" class="form-control">
         <option value="{{ $event->organizer->id }}">{{ $event->organizer->name }} (Organizer)</option>
-        @foreach ($event->invitations as $invitation)
+        @foreach ($event->invitations->where('status', 'accepted') as $invitation)
             <option value="{{ $invitation->user->id }}">{{ $invitation->user->name }}</option>
         @endforeach
     </select>
 </div>
+
 
 
 
