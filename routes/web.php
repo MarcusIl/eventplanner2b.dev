@@ -28,7 +28,7 @@ Route::post('/invitations/{invitation}/respond', [EventController::class, 'respo
 Route::get('/tasks/create/{event}', [TaskController::class, 'showCreateForm'])->name('tasks.create');
 Route::post('/tasks/create/{event}', [TaskController::class, 'create']);
 
-// Budget
+// Budget/
 Route::get('/budgets/create/{event}', [BudgetController::class, 'createForm'])->name('budgets.create');
 Route::post('/budgets/create/{event}', [BudgetController::class, 'create']);
 Route::patch('/budgets/{event}/{budget}', [BudgetController::class, 'update'])->name('budgets.update');
