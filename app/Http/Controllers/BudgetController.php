@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Budget;
@@ -8,6 +7,11 @@ use Illuminate\Http\Request;
 
 class BudgetController extends Controller
 {
+    public function createForm(Event $event)
+    {
+        return view('budgets_create', compact('event'));
+    }
+
     public function create(Request $request, Event $event)
     {
         // Validate the request data
@@ -15,15 +19,17 @@ class BudgetController extends Controller
             'budget_name' => 'required',
             'budget_amount' => 'required|numeric',
         ]);
-
+    
         // Create a new budget for the event
         $budget = Budget::create([
             'event_id' => $event->id,
-            'budget_name' => $request->input('budget_name'),
-            'budget_amount' => $request->input('budget_amount'),
+            'name' => 'Budget', // Provide a default value or fetch from the request
+            'description' => $request->input('budget_description'),
+            'amount' => $request->input('budget_amount'),
         ]);
-
-        // Return a response or redirect to the event details page
+    
+        // Redirect back to the event show page
+        return redirect()->route('events.show', $event->id);
     }
 
     public function update(Request $request, Event $event, Budget $budget)
@@ -35,10 +41,9 @@ class BudgetController extends Controller
         ]);
 
         // Update the budget details
-        $budget->update([
-            'budget_name' => $request->input('budget_name'),
-            'budget_amount' => $request->input('budget_amount'),
-        ]);
+        $budget->name = $request->input('budget_name');
+        $budget->amount = $request->input('budget_amount');
+        $budget->save();
 
         // Return a response or redirect to the event details page
     }
