@@ -31,6 +31,9 @@ Route::post('/invitations/{invitation}/respond', [EventController::class, 'respo
 // Tasks
 Route::get('/tasks/create/{event}', [TaskController::class, 'showCreateForm'])->name('tasks.create');
 Route::post('/tasks/create/{event}', [TaskController::class, 'create']);
+Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+
+
 
 // Budgets
 Route::get('/budgets/create/{event}', [BudgetController::class, 'createForm'])->name('budgets.create');

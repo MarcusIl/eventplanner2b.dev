@@ -11,15 +11,16 @@
         <p><strong>Organizer:</strong> {{ $event->organizer->name }}</p>
     @endif
     <p><strong>Guest List:</strong></p>
-@if ($event->guests->isEmpty())
-    <p>No guests found.</p>
-@else
-    <ul>
-        @foreach ($event->guests as $guest)
-            <li>{{ $guest->name }}</li>
-        @endforeach
-    </ul>
-@endif
+    @if ($event->guests->isEmpty())
+        <p>No guests found.</p>
+    @else
+        <ul>
+            @foreach ($event->guests as $guest)
+                <li>{{ $guest->name }}</li>
+            @endforeach
+        </ul>
+    @endif
+
     <!-- Button to create tasks -->
     @if (auth()->check() && $event->organizer_id == auth()->user()->id)
         <form action="{{ route('tasks.create', $event->id) }}" method="GET">
@@ -36,7 +37,6 @@
             <button type="submit" class="btn btn-primary">Create Budget</button>
         </form>
     @endif
-
 
     <!-- Form to invite guests -->
     @if (auth()->check() && $event->organizer_id == auth()->user()->id)
@@ -55,7 +55,42 @@
         </form>
     @endif
 
-    
+<!-- Display tasks -->
+<h2>Tasks</h2>
+@if ($event->tasks->count() > 0)
+    <ul>
+        @foreach ($event->tasks as $task)
+            <li>
+                <strong>Task Name:</strong> {{ $task->name }}
+                <br>
+                <strong>Task Description:</strong> {{ $task->description }}
+                <br>
+                <strong>Status:</strong> {{ $task->status }}
+                <br>
+                <strong>Assigned To:</strong> {{ $task->user->name }}
+                @if (auth()->check() && $event->organizer_id == auth()->user()->id)
+                    @if ($task->status !== 'finished')
+                        <!-- Checkbox to mark task as finished -->
+                        <form action="{{ route('tasks.update', $task->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <label>
+                                <input type="checkbox" name="status" value="finished" onchange="this.form.submit()">
+                                Mark as finished
+                            </label>
+                        </form>
+                    @endif
+                @endif
+            </li>
+        @endforeach
+    </ul>
+@else
+    <p>No tasks available.</p>
+@endif
+
+
+
+
     <!-- Display budgets -->
     <h2>Budgets</h2>
     @if ($event->budgets->count() > 0)

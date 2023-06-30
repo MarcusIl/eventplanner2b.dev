@@ -9,13 +9,8 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'event_id',
-        'user_id',
-        'name',
-        'description',
-        'status',
-    ];
+    protected $fillable = ['event_id', 'user_id', 'name', 'description', 'status'];
+
 
     public function event()
     {
@@ -25,6 +20,11 @@ class Task extends Model
     public function assignee()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     // Add any other custom methods or relationships here

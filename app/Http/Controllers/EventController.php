@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Gate;
 
+
 class EventController extends Controller
 {
     public function index()
@@ -64,7 +65,8 @@ class EventController extends Controller
     {
         // Fetch the event details from the database
         $event = Event::findOrFail($event->id);
-    
+        
+        
         // Fetch the tasks associated with the event
         $tasks = $event->tasks;
         $event = Event::with('guests')->findOrFail($event->id);
