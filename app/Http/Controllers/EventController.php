@@ -55,6 +55,9 @@ class EventController extends Controller
     
         // Fetch the tasks associated with the event
         $tasks = $event->tasks;
+
+        $event = Event::with('guests')->findOrFail($event->id);
+
     
         // Pass the event and tasks data to the events_show view
         return view('events_show', compact('event', 'tasks'));

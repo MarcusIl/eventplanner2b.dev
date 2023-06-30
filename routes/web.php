@@ -23,6 +23,7 @@ Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('eve
 Route::post('/events/{event}/send-invitation', [EventController::class, 'sendInvitation'])->name('events.sendInvitation');
 Route::post('events/{event}/invite', [EventController::class, 'invite'])->name('events.invite');
 Route::get('/invitations', [EventController::class, 'invitations'])->name('invitations.index');
+Route::post('/invitations/{invitation}/respond', [EventController::class, 'respondInvitation'])->name('invitations.respond');
 
 
 
