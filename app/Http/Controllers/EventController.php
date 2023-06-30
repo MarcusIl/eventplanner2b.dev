@@ -70,28 +70,33 @@ class EventController extends Controller
     }
 
     public function sendInvitation(Request $request, Event $event)
-    {
-        // Validate the request data
-        $request->validate([
-            'email' => 'required|email',
-        ]);
+{
+    // Validate the request data
+    $request->validate([
+        'email' => 'required|email',
+    ]);
 
-        // Retrieve the event details
-        $event = Event::findOrFail($event->id);
+    // Retrieve the event details
+    $event = Event::findOrFail($event->id);
 
-        // Create a new invitation
-        Invitation::create([
-            'event_id' => $event->id,
-            'email' => $request->input('email'),
-            'status' => 'pending',
-        ]);
+    // Find the user with the matching email
+    $user = User::where('email', $request->input('email'))->first();
 
-        // Send the invitation email
-        Mail::to($request->input('email'))->send(new EventInvitation($event));
-
-        // Redirect back or show a success message
-        return redirect()->back()->with('success', 'Invitation sent successfully');
+    if (!$user) {
+        // User not found, handle the error accordingly
+        return redirect()->back()->with('error', 'User with the provided email not found.');
     }
+
+    // Create a new invitation and set the event_id and user_id
+    $invitation = new Invitation();
+    $invitation->event_id = $event->id;
+    $invitation->user_id = $user->id; // Set the user_id based on the matched user
+    $invitation->status = 'pending';
+    $invitation->save();
+
+    // Redirect back or show a success message
+    return redirect()->back()->with('success', 'Invitation sent successfully');
+}
 
     public function respondInvitation(Request $request, Invitation $invitation)
     {
