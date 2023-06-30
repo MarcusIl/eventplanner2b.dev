@@ -2,9 +2,7 @@
 
 @section('content')
     <h1>My Invitations</h1>
-
     @if ($invitations->isEmpty())
-
         <p>No invitations found.</p>
     @else
         <table>
