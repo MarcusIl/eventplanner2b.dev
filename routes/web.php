@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,6 +14,12 @@ Route::get('/', function () {
 Route::prefix('admin')->middleware('auth')->group(function () {
     // Add routes specific to admin here
 });
+Route::middleware('admin')->group(function () {
+    Route::delete('/admin/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.destroy');
+    Route::delete('/admin/events/{event}', [AdminController::class, 'deleteEvent'])->name('admin.events.destroy');
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
+
 
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/create', [EventController::class, 'showCreateForm'])->name('events.create');
