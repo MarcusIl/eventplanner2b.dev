@@ -2,6 +2,9 @@
 
 @section('content')
     <h1>Pick an event you like</h1>
+    <a href="{{ route('events.create') }}" class="btn btn-primary">Create Event</a>
+    <br>
+    <a href="{{ route('invitations.index') }}">My Invitations</a>
     @if (count($events) == 0)
         <p class='error'>There are no records in the database!</p>
     @else
@@ -14,8 +17,6 @@
         </ul>
     @endif
 
-    <a href="{{ route('events.create') }}" class="btn btn-primary">Create Event</a>
-    <br>
-    <a href="{{ route('invitations.index') }}">My Invitations</a>
+
 
 @endsection

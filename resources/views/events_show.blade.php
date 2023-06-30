@@ -10,11 +10,6 @@
     @if ($event->organizer)
         <p><strong>Organizer:</strong> {{ $event->organizer->name }}</p>
     @endif
-    <p><strong>Guest list:</strong><p>
-    @foreach ($event->guests as $guest)
-    <p>{{ $guest->name }}</p>
-    @endforeach
-
 
     <!-- Button to create tasks -->
     @if (auth()->check() && $event->organizer_id == auth()->user()->id)
@@ -25,11 +20,14 @@
     @endif
 
     <!-- Button to create budget -->
-    <form action="{{ route('budgets.create', $event->id) }}" method="POST">
-        @csrf
-        <!-- Add your form fields here -->
-        <button type="submit" class="btn btn-primary">Create Budget</button>
-    </form>
+    @if (auth()->check() && $event->organizer_id == auth()->user()->id)
+        <form action="{{ route('budgets.create', $event->id) }}" method="GET">
+            @csrf
+            <!-- Add your form fields here -->
+            <button type="submit" class="btn btn-primary">Create Budget</button>
+        </form>
+    @endif
+
 
     <!-- Form to invite guests -->
     @if (auth()->check() && $event->organizer_id == auth()->user()->id)
@@ -47,4 +45,26 @@
             <button type="submit" class="btn btn-danger">Delete Event</button>
         </form>
     @endif
+
+    
+    <!-- Display budgets -->
+    <h2>Budgets</h2>
+    @if ($event->budgets->count() > 0)
+        <ul>
+            @foreach ($event->budgets as $budget)
+                <li>{{ $budget->name }} - ${{ $budget->amount }} - {{$budget->description}}</li>
+                <!-- Display the delete button if the user is the organizer -->
+                @if (auth()->check() && $event->organizer_id == auth()->user()->id)
+                    <form action="{{ route('budgets.delete', [$event->id, $budget->id]) }}" method="POST" style="display: inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                @endif
+            @endforeach
+        </ul>
+    @else
+        <p>No budgets available.</p>
+    @endif
+
 @endsection

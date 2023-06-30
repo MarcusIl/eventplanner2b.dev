@@ -21,16 +21,17 @@ class BudgetController extends Controller
         ]);
     
         // Create a new budget for the event
-        $budget = Budget::create([
-            'event_id' => $event->id,
-            'name' => 'Budget', // Provide a default value or fetch from the request
-            'description' => $request->input('budget_description'),
-            'amount' => $request->input('budget_amount'),
-        ]);
+        $budget = new Budget();
+        $budget->event()->associate($event);
+        $budget->name = $request->input('budget_name');
+        $budget->description = $request->input('budget_description');
+        $budget->amount = $request->input('budget_amount');
+        $budget->save();
     
         // Redirect back to the event show page
         return redirect()->route('events.show', $event->id);
     }
+    
 
     public function update(Request $request, Event $event, Budget $budget)
     {
@@ -52,7 +53,10 @@ class BudgetController extends Controller
     {
         // Delete the budget
         $budget->delete();
-
-        // Return a response or redirect to a different page
+    
+        // Redirect back to the event show page
+        return redirect()->route('events.show', $event->id);
     }
+    
+    
 }

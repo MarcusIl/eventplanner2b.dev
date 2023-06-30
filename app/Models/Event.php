@@ -29,7 +29,7 @@ class Event extends Model
     }
     
 
-    public function budget()
+    public function budgets()
     {
         return $this->hasMany(Budget::class);
     }
